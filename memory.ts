@@ -1,38 +1,69 @@
 // https://www.memorylosstest.com/free-working-memory-tests-online/
 
-
-// 1130 done 3
-    // update checkbox
-    // check result in time
-// 1140 done 3
-    // update checkbox
-    //30min  // check result in time
-// 1239 done 3 
-    // update checkbox
-    //60min  // check result in time
-
-
+  // update checkbox 1h
 (function myCode(){
     function cleanPageAndConsole() {
-    if($('.shtext')) {
-        $('.shtext').remove();
+        const remove = [
+            '#masthead',
+            '#menu-top',
+            '.shtext',
+            '#secondary',
+            '.entry-content p:first',
+        ]
+        remove.forEach( el => {
+            $(el).remove();   
+        })
+        console.clear();
     }
-    console.clear();
-    }
+    
+    // Prepair page
+    function updatePageAndSettings() {
+        const {
+            EL_MINUS, 
+            EL_FAST, 
+            EL_LEVEL, 
+            EL_GAME, 
+            EL_MAIN
+        } = getEls();
 
-    function updatePage() {
+        // center
+        EL_MAIN.css({
+            'display': 'flex',
+            'justify-content': 'center',
+            });
+
+        $(window).scrollTop(0);
+        // scroll to game
+        $([document.documentElement, document.body]).animate({
+            scrollTop: EL_GAME.offset().top - 20
+        }, 500);
+
+        // make button green
         $('#start1 button').text("Start");
         $('#start1 button').css("background-color","green");
+
+        // reset level
+        while(Number(EL_LEVEL.text()) > 3) {
+           EL_MINUS.click();
+        }
+
+        // select fast
+        EL_FAST.click();
     }
 
     function getEls() {
         return {
-            'EL_BOX': $('<div>').attr('id', 'checkbox-box'),
+            'EL_BOX': $('<div>').attr('id', 'status-box'),
             'EL_GAME': $('#dspan'),
             'EL_START':  $('#start1 button'),
             'EL_NUM_PAD':  $('.shtab'),
-            'EL_LEVEL': $('.shlast .svalue'),
-            'EL_RESULTS': $('#results-0 div'),
+            'EL_LEVEL': $('.svalue'),
+            'NAME_RESULT': '#results-0 div',
+            'EL_PLUS': $('#plus'),
+            'EL_MINUS': $('#minus'),
+            'EL_FAST': $('input[value="500"'),
+            'EL_SLOW': $('input[value="1000"'),
+            'EL_MAIN': $('#main'),
         }
     }
 
@@ -48,70 +79,113 @@
             .prepend(createCheckBox())});
 
         // add checkboxs
-        if(!$('#checkbox-box')[0]) {
-            $(EL_GAME).prepend(EL_BOX);
+        if(!$('#status-box')[0]) {
+            $(EL_GAME).append(EL_BOX);
         }
     }
 
-// Adds listener to start button,
-// wait a level amout of clicks
-// and return result as promise
-const checkResult = () => {
-    const { 
-         EL_BOX,
-         EL_GAME,
-         EL_START, 
-         EL_LEVEL, 
-         EL_NUM_PAD,
-         EL_RESULTS,
-    } = getEls();
+    // Adds listener to start button,
+    // wait a level amout of clicks
+    // and return result as promise
+    const checkResult = (() => {
+        const { 
+             EL_LEVEL, 
+             EL_NUM_PAD,
+             NAME_RESULT,
+        } = getEls();
 
-    const isCorrect = () => EL_RESULTS.text() === 
-        'You have entered correct numbers';
+        console.log('0 ', EL_LEVEL)
 
-    return ((level, PAD) => {
-        let inputCount = level + 1;
-        PAD.unbind('click.pad');
-        return () => {
-            return new Promise( (resolve, reject) => {
-                PAD.bind('click.pad', () => {
-                    if(--inputCount === 0) {
-                        resolve(isCorrect());
-                        PAD.unbind('click.pad')
-                    }
+        const isCorrect = () => $(NAME_RESULT).text() === 
+            'You have entered correct numbers';
+
+        return ((level) => {
+            let inputCount = level + 1;
+            EL_NUM_PAD.unbind('click.pad');
+                return new Promise( (resolve, reject) => {
+                    EL_NUM_PAD.bind('click.pad', () => {
+                        if(--inputCount === 0) {
+                            setTimeout( () => {
+                                resolve(isCorrect());
+                            });
+                            EL_NUM_PAD.unbind('click.pad')
+                        }
+                    });
                 });
-            });
-        }
-    });
-}
+        });
+    })();
 
+   const onBindResult = (handler) => {
+       const { 
+            EL_LEVEL,
+            EL_START,
+        } = getEls();
 
+        let promise = {};
 
+        EL_START.unbind('click.start');   
+        EL_START.bind('click.start', () => {
+            const VAL_LEVEL = Number(EL_LEVEL.text());
+            checkResult(VAL_LEVEL).then( handler );
+        });
+   }
 
-    
-   //clean up the page
-   cleanPageAndConsole();
-
-    // define elements
+   // define elements
    const { 
      EL_BOX,
      EL_GAME,
      EL_START, 
      EL_LEVEL, 
      EL_NUM_PAD,
+     EL_MINUS,
+     EL_PLUS,
     } = getEls();
    // create checkboxes
-   createResultsBox(10);
-    
-    if($('#start1 button').text() !== 'Start') {
-        EL_START.unbind('click.start');   
-        EL_START.bind('click.start', function() {
-            const VAL_LEVEL = +(EL_LEVEL.text());
-            checkResult(VAL_LEVEL, EL_NUM_PAD)().then( (value) => {
-                console.log('PROMIS RESOLED with ', value);
-            });
-        });
-    }
+   createResultsBox(5);
+   //clean up the page
+   cleanPageAndConsole();
+   // set labels and set level to 3
+   updatePageAndSettings();
 
-    updatePage();
+   const status = {
+    level: 0,
+    speed: 0,
+    current: 1,
+   };
+
+   const updateCheckboxs = function(number) {
+    Array.prototype.forEach.call(
+        $("#status-box input"), 
+        (e, i) => { 
+            $(e).prop( "checked", i < number );
+        }
+    );
+   }
+   
+   const resultHandler = result => {
+       const current = status.current;
+
+       const { 
+         EL_PLUS,
+        } = getEls();
+        
+       if( result ) {
+           if(status.current === 5) {
+                status.current = 0;
+                status.level++;
+                EL_PLUS.click()
+           } else {
+               status.current++;
+           }
+
+       } else {
+           //add level logic
+           status.current = (current > 0) ? current - 1 : current;
+       }
+            
+       updateCheckboxs(status.current);
+   }
+
+   onBindResult(resultHandler);
+   
 })();
