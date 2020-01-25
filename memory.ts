@@ -1,22 +1,44 @@
-// https://www.memorylosstest.com/free-working-memory-tests-online/
+/**
+    Version: 1.25
+    Link:  https://www.memorylosstest.com/free-working-memory-tests-online/
+
+    - Clear advertisement
+    - Adds config
+    - Adds jquery
+    - Shared code
+*/
+
+// configuration
+CONFIG = {
+    TIMER: true,
+    TIMER_MIN: 3,
+    STEP_FORWARD: 1,
+    STEP_BACK: 2,
+    STEPS: 5,
+    ATTEMPTS: 5,
+    CLEAR_CONSOLE: true,
+    ADVS: [
+        '.adsbygoogle',
+        '#masthead', 
+        '#menu-top', 
+        '.shtext', 
+        '#secondary', 
+        '.entry-content p:first'
+    ]
+};
 
 // update checkbox 1h
-// update checkbox 30h
 (function myCode() {
-    const CONFIG = {
-        STEP_FORWARD: 1,
-        STEP_BACK: 2,
-        STEPS: 5,
-    }
+    // LOAD JQUARY
+    loadJquery();
 
-    function cleanPageAndConsole() {
-        const remove = ['#masthead', '#menu-top', '.shtext', '#secondary', '.entry-content p:first', ]
-        remove.forEach(el=>{
-            $(el).remove();
-        }
-        )
-        console.clear();
-    }
+    // clean up
+    clearAds();
+
+    // setTimer
+    CONFIG.TIMER && setTimeout(() => {
+        alert(`${CONFIG.TIMER_MIN} min passed. Well Done!`);
+    }, CONFIG.TIMER_MIN * 1000 * 60);
 
     // Prepair page
     function updatePageAndSettings() {
@@ -137,15 +159,15 @@
             
     // create checkboxes
     createResultsBox(CONFIG.STEPS);
-    //clean up the page
-    cleanPageAndConsole();
+    
     // set labels and set level to 3
     updatePageAndSettings();
 
     const status = {
         level: 0,
         speed: 0,
-        current: 1,
+        current: 0,
+        attemts: CONFIG.ATTEMPTS,
     };
 
     const updateCheckboxs = function(number) {
@@ -158,14 +180,22 @@
     const resultHandler = result=>{
         const current = status.current;
 
-        const {EL_PLUS, } = getEls();
+        const {EL_PLUS, EL_SLOW} = getEls();
 
         if (result) {
             // PLUS
             if (status.current === CONFIG.STEPS) {
+                
+                // if slow
+                if($('input[value="1000"]:checked').val()) {
+                    $('input[value="500"]').click();
+                    status.attemts = CONFIG.ATTEMPTS;
+                } else {
+                    EL_PLUS.click();
+                }
+
                 status.current = 0;
                 status.level++;
-                EL_PLUS.click();
             } else {
                 status.current += CONFIG.STEP_FORWARD;
             }
@@ -174,18 +204,47 @@
             // MUNIS
             //add level logic
             status.current = (current - CONFIG.STEP_BACK > 0) ? current - CONFIG.STEP_BACK : 0;
-            if (current - CONFIG.STEP_BACK > 0) {
-                status.current = current - CONFIG.STEP_BACK;
-            } else if (status.level - 1 > 3) {
+          
+          status.current === 0 && 
+          status.attemts > 0 &&
+          status.attemts --;
+
+          status.current === 0 && 
+          $('input[value="500"]:checked').val() &&
+          status.attemts === 0 &&
+          EL_SLOW.click();
+
+          if (status.level - 1 > 3) {
                 EL_MINUS.click();
                 status.level--;
             }
         }
 
         updateCheckboxs(status.current);
+        clearAds();
     }
 
     onBindResult(resultHandler);
 
 }
 )();
+
+// SHARED CODE -----------------------------------------------------------
+
+// CLEAR ADVS
+function clearAds(isCONSOLE = CONFIG.CLEAR_CONSOLE ,ADVS = CONFIG.ADVS) {
+    isCONSOLE && console.clear();
+    document.body.click();
+        
+    // REMOVE ADV
+    ADVS.forEach( el =>  $(el).remove() );
+}
+
+// ADDS JQUARY
+function loadJquery() {
+        if(!$()){
+        var jq = document.createElement('script');
+        jq.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js";
+        document.getElementsByTagName('head')[0].appendChild(jq);
+    }
+}

@@ -1,17 +1,43 @@
+/**
+    version: 1.25
+    link: https://pronuncian.com/long-a-short-a
+
+    - Create shared code.
+    - Move advertisement tags to config.
+*/
+
 CONFIG = {
     CORRECT_COLOR: '#2e7d32',
     INCORRECT_CLOLOR: '#b71c1c',
-    HIDE_SOUNDS: false,
+    HIDE_SOUNDS: true,
     NEXT_START_TIME: 1500,
     EXEPTIONS: {
         hill: 'hit' 
     },
-    TIMER_MIN: 1,
+    TIMER_MIN: 5,
     TIMER: true,
+    CLEAR_CONSOLE: false,
+    ADVS: [
+        '#page-footer-wrapper', 
+        'ins',
+        '#sidebar-one', 
+        'adsbygoogle-noablate', 
+        '.adsbygoogle.adsbygoogle-noablate'
+    ]
 };
 
 
-(()=>{
+ACTIVE_BUTTONS = [];
+
+// LOAD SCRIPTS
+loadJquery();
+
+setTimeout(()=>{
+    // CLEAR
+    console.clear();
+
+    // Adds Controls
+    createControlsLayout();
     
     // setTimer
     CONFIG.TIMER && setTimeout(() => {
@@ -20,14 +46,22 @@ CONFIG = {
 
     // FIX: Need to click first
     window.document.body.firstElementChild.click()
+
     
-    // CLEAR
+    // SHOW TITLES IN THE MIDDLE
+    document.getElementsByClassName('main-content')[0]
+        .style['text-align'] = 'center';
+    
+    // CLEAR ADS
     clearAds();
 
     const all_control_paires = getAllControllPaires();
     const all_titles = getAllTitles();
 
     function START(all_titles, all_control_paires) {
+        // Clear ADDS
+        clearAds()
+
         const {
             playbRandom, 
             playButtons,
@@ -35,7 +69,7 @@ CONFIG = {
             answer
         } = randomElements(all_control_paires, all_titles, 0);
 
-        // Play
+        // PLAY
         playbRandom.click();
 
         // SHOW BUTTONS
@@ -51,17 +85,25 @@ CONFIG = {
 
         // LOG
         setTimeout( () => {
-            console.warn('WORD:', answer.toUpperCase())
+            console.warn('WORD:', answer.toUpperCase());
         }, 2000);
     }
 
     START(all_titles, all_control_paires);
 
+    // HOT KEYS
+    document.addEventListener('keyup', onArrowsPress);
 
     // HIDE ALL
     CONFIG.HIDE_SOUNDS && hideAll(getAudioBlock(), all_titles);
-})()
+}, 500)
 
+// HOT KEYS
+function onArrowsPress(key) {
+    ACTIVE_BUTTONS.forEach( button => {
+        button.onHotKeyPress(key.code);
+    })
+}
 
 // RANDOM LOGIC
 function random(max, min = 0) { return Math.floor(Math.random() * (max - min) + min)};
@@ -69,8 +111,6 @@ function randomElement(array, min = 0) { return array[random(array.length, min)]
 function randomElements(controls, titles) { 
     
     let randomNumber = random(controls.length);
-
-
 
     let controls_pair = controls[randomNumber].childNodes;
     const control = randomElement(controls_pair);
@@ -94,10 +134,10 @@ function randomElements(controls, titles) {
 
 // SHOW LOGIC
 function createButton(title, index, callback) {
-    var button = document.createElement("button");
+    const button = document.createElement("button");
 
-    // left element;
-    config = (index === 0) ? 
+    // LEFT ELEMENT;
+    config = (isLeft(index)) ? 
         // LEFT
         {
             margin:  "10px 1px 10px 20%",
@@ -116,14 +156,44 @@ function createButton(title, index, callback) {
     button.style.width =  config.width;
     button.style.margin = config.margin;
     button.style['border-radius'] = config['border-radius'];
-    button.style.outline = 'none'
+    button.style.outline = 'none';
 
-    return button;
+
+    // HOT KEYS LOGIC
+    button.keyCode = isLeft(index) ? "ArrowLeft" : "ArrowRight";
+    button.onHotKeyPress = keyCode => {
+        keyCode === button.keyCode && button.click();
+    }
+
+    if(ACTIVE_BUTTONS.length === 2) {
+        ACTIVE_BUTTONS.length = 0;
+    }
+    ACTIVE_BUTTONS.push(button);
+
+    return button
+}
+
+function createControlsLayout() {
+    // cheks
+    const isOnThePage = $('#controls-wrapper').parent().length;    
+    if(isOnThePage) {
+        return true;
+    }
+    
+    // adds    
+    $('#page-body-header').append(
+        $(`<div id="controls-wrapper">
+            <div class="controls"><div>
+        </div>`)
+    );
 }
 
 function showOptions(options, answer, callback) {
     let wrapper = document.createElement("div");
-    document.getElementById("page-body-header").appendChild(wrapper);
+
+
+
+    $('#controls-wrapper .controls').append(wrapper);
 
     // clear
     wrapper.innerHTML = '';
@@ -138,24 +208,29 @@ function showOptions(options, answer, callback) {
             CONFIG.CORRECT_COLOR : 
             CONFIG.INCORRECT_CLOLOR;
             event.target.style.background = color;
-            event.target.style.color = 'white';
-            
+            event.target.style.color = 'white';            
             // show result in buttons
             // wrapper.appendChild(result)
             callback && callback(event.target.innerHTML);
+
         }))
         .forEach( button => controls.appendChild(button));
    
     wrapper.appendChild(controls);
     window.scroll({
-      top: controls.offsetTop - window.innerHeight /2, 
+      top: controls.offsetTop - window.innerHeight / 2, 
       left: 0, 
       behavior: 'smooth'
     });
 }
 
+// CHECKERS
 function isCorrect(title, answer) {    
     return title === answer || CONFIG.EXEPTIONS[title] === answer;
+}
+
+function isLeft(index) {
+    return index === 0;
 }
 
 // GETTERS
@@ -194,20 +269,25 @@ function getAllTitles() {
 
 function hideAll(audioBlocks, all_titles){
     audioBlocks.forEach( el => el.style.display = "none" );
-    all_titles.forEach( el => el.style.display = "none" );
+//     all_titles.forEach( el => el.style.display = "none" );
 }
 
 
-
-// CLEAR ADD
-function clearAds() {
-    console.clear();
-    document.body.click();
-    const removeChild = el => {
-        let elem = document.querySelector(el);
-        elem && elem.parentNode && elem.parentNode.removeChild(elem);
+// SHARED CODE ----------------------------------------------------------------
+function loadJquery() {
+        if(!$()){
+        var jq = document.createElement('script');
+        jq.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js";
+        document.getElementsByTagName('head')[0].appendChild(jq);
     }
+}
 
-    // REMOVE ADD
-    ['#page-footer-wrapper', 'ins', '#sidebar-one', 'adsbygoogle-noablate'].forEach(removeChild);
+// CLEAR ADVS
+function clearAds(isCONSOLE = CONFIG.CLEAR_CONSOLE ,ADVS = CONFIG.ADVS) {
+    // clear console
+    isCONSOLE && console.clear();
+    document.body.click();
+    
+    // removes add    
+    ADVS.forEach( el =>  $(el).remove() );
 }
