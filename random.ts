@@ -1,6 +1,7 @@
 /**
     version: 1.25
     link: https://pronuncian.com/long-a-short-a
+    tasks: https://random85.monday.com/boards/438402562
 
     - Create shared code.
     - Move advertisement tags to config.
