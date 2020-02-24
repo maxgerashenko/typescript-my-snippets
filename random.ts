@@ -6,6 +6,13 @@
     - Create shared code.
     - Move advertisement tags to config.
 */
+/**
+    version: 1.25
+    link: https://pronuncian.com/long-a-short-a
+
+    - Create shared code.
+    - Move advertisement tags to config.
+*/
 
 CONFIG = {
     CORRECT_COLOR: '#2e7d32',
@@ -15,7 +22,7 @@ CONFIG = {
     EXEPTIONS: {
         hill: 'hit' 
     },
-    TIMER_MIN: 5,
+    TIMER_MIN: 1,
     TIMER: true,
     CLEAR_CONSOLE: false,
     ADVS: [
@@ -76,6 +83,7 @@ setTimeout(()=>{
         // SHOW BUTTONS
         showOptions(options_title, answer, (title) => {            
             if(isCorrect(title, answer)){
+                playButtons[title].click();
                 setTimeout(()=>{
                     START(all_titles, all_control_paires)
                 }, CONFIG.NEXT_START_TIME)
