@@ -10,7 +10,7 @@ const CONFIG = {
 const MEMORY_MAP = {
     0: ["Nuton", 	  "Drops",   "A Bland Apple"    ],
     1: ["Tesla",    "Drives",  "A Fresh Car"      ],
-    2: ["Einstein", "Showes",  "A Sour Tang"      ],
+    2: ["Einstein", "Shows",  "A Sour Tang"      ],
     3: ["Chaplin",  "Walks",   "Salty Shoes"    ],
     4: ["Mozart",   "Plays",   "Juicy Music"    ],
     5: ["Elvis",    "Sings",   "Sweet Songs"    ],
