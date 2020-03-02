@@ -1,23 +1,23 @@
 console.clear();
 
 const CONFIG = {
-  LETTERS_COUNT: 2,
+  LETTERS_COUNT: 3,
   NUMBER_LENGTH: 3,
-  RANDOM_LETTERS: 2,
+  RANDOM_LETTERS: 1,
   RESULT_TIME_DELAY: 3000,
 }
 
 const MEMORY_MAP = {
-    0: ["Nuton", 	  "Drops",   "Bland Apple"   ],
-    1: ["Tesla",    "Drives",  "Fresh Car"   ],
-    2: ["Einstein", "Showes",  "Sour Tang"    ],
-    3: ["Chaplin",  "Walks",   "Salty Shoes"   ],
-    4: ["Mozart",   "Plays",   "Juicy Music"   ],
-    5: ["Elvis",    "Sings",   "Sweet Songs"   ],
-    6: ["Jakson",   "Dances",  "Spicy Moves"   ],
-    7: ["Armstrong","Jumps",   "Cheesy Moon"  ],
+    0: ["Nuton", 	  "Drops",   "A Bland Apple"    ],
+    1: ["Tesla",    "Drives",  "A Fresh Car"      ],
+    2: ["Einstein", "Showes",  "A Sour Tang"      ],
+    3: ["Chaplin",  "Walks",   "Salty Shoes"    ],
+    4: ["Mozart",   "Plays",   "Juicy Music"    ],
+    5: ["Elvis",    "Sings",   "Sweet Songs"    ],
+    6: ["Jakson",   "Dances",  "Spicy Moves"    ],
+    7: ["Armstrong","Jumps",   "A Cheesy Moon"    ],
     8: ["Wright",   "Flies",   "Crunchy Plains" ],
-    9: ["Monroe",   "Hides",   "Ripe Bottom"    ],
+    9: ["Monroe",   "Hides",   "A Ripe Bottom"    ],
 }
 
 
