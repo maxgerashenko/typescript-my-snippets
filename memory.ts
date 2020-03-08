@@ -7,6 +7,12 @@
     - Adds jquery
     - Shared code
 */
+// https://www.memorylosstest.com/free-working-memory-tests-online/
+
+// ver 1.25
+// Clear advertisement
+// Adds config
+// Adds jquery
 
 // configuration
 CONFIG = {
@@ -27,6 +33,7 @@ CONFIG = {
     ]
 };
 
+
 // update checkbox 1h
 (function myCode() {
     // LOAD JQUARY
@@ -37,7 +44,12 @@ CONFIG = {
 
     // setTimer
     CONFIG.TIMER && setTimeout(() => {
-        alert(`${CONFIG.TIMER_MIN} min passed. Well Done!`);
+        alert(`First ${CONFIG.TIMER_MIN} min passed.`);
+        
+        setTimeout(() => {
+            alert(`${CONFIG.TIMER_MIN} min passed. Well Done!`);
+        }, CONFIG.TIMER_MIN * 1000 * 60);
+        
     }, CONFIG.TIMER_MIN * 1000 * 60);
 
     // Prepair page
@@ -81,7 +93,7 @@ CONFIG = {
             'EL_START': $('#start1 button'),
             'EL_NUM_PAD': $('.shtab'),
             'EL_LEVEL': $('.svalue'),
-            'NAME_RESULT': '#results-0 div',
+            'NAME_RESULT': '#results div',
             'EL_PLUS': $('#plus'),
             'EL_MINUS': $('#minus'),
             'EL_FAST': $('input[value="500"'),
@@ -124,16 +136,27 @@ CONFIG = {
             let inputCount = level + 1;
             EL_NUM_PAD.unbind('click.pad');
             return new Promise((resolve,reject)=>{
-                EL_NUM_PAD.bind('click.pad', ()=>{
+                const input = document.getElementById('shnum');
+                const handler = () => {
                     if (--inputCount === 0) {
                         setTimeout(()=>{
                             resolve(isCorrect());
-                        }
-                        );
-                        EL_NUM_PAD.unbind('click.pad')
+                        });
+                        return true
                     }
+                    
+                   return false;
                 }
-                );
+                
+
+                input.addEventListener("keyup", () => {
+                    handler() && input.removeEventListener("keyup", handler);
+                })
+
+                EL_NUM_PAD.bind('click.pad', () => {
+                    handler() && EL_NUM_PAD.unbind('click.pad');
+
+                });
             }
             );
         }
@@ -228,8 +251,6 @@ CONFIG = {
 
 }
 )();
-
-// SHARED CODE -----------------------------------------------------------
 
 // CLEAR ADVS
 function clearAds(isCONSOLE = CONFIG.CLEAR_CONSOLE ,ADVS = CONFIG.ADVS) {
