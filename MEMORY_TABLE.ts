@@ -13,29 +13,17 @@ const CONFIG = {
 }
 
 const MEMORY_MAP = {
-    0: ["October",   "eat", "Bland Apple"    ],
-    1: ["January",   "will be driving",  "A Fresh Car"      ],
-    2: ["April",     "will have showed", "A Sour Tang"      ],
-    3: ["March",     "wears",            "Salty Shoes"      ],
-    4: ["April",     "are playing",      "Juicy Music"      ],
-    5: ["May",       "has sung",         "Sweet Songs"      ],
-    6: ["June",      "danced",           "Spicy Moves"      ],
-    7: ["July",      "were jumping",     "A Cheesy Moon"    ],
-    8: ["Augast",    "had flown",        "Crunchy Plains"   ],
-    9: ["September", "would hide",       "A Ripe Bottom"    ],
+    0: ["October",   "eat",    "Bland Apple"    ],
+    1: ["January",   "drives", "A Fresh Car"      ],
+    2: ["April",     "showes", "A Sour Tang"      ],
+    3: ["March",     "wears",  "Salty Shoes"      ],
+    4: ["April",     "plays",  "Juicy Music"      ],
+    5: ["May",       "sings",  "Sweet Songs"      ],
+    6: ["June",      "dances", "Spicy Moves"      ],
+    7: ["July",      "jumps",  "A Cheesy Moon"    ],
+    8: ["Augast",    "flyes",  "Crunchy Plains"   ],
+    9: ["September", "hides",  "A Ripe Bottom"    ],
 }
-
-    // 0: ["Nuton", 	  "Drops",   "A Bland Apple"    ],
-    // 1: ["Tesla",    "Drives",  "A Fresh Car"      ],
-    // 2: ["Einstein", "Shows",  "A Sour Tang"      ],
-    // 3: ["Chaplin",  "Walks",   "Salty Shoes"    ],
-    // 4: ["Mozart",   "Plays",   "Juicy Music"    ],
-    // 5: ["Elvis",    "Sings",   "Sweet Songs"    ],
-    // 6: ["Jakson",   "Dances",  "Spicy Moves"    ],
-    // 7: ["Armstrong","Jumps",   "A Cheesy Moon"    ],
-    // 8: ["Wright",   "Flies",   "Crunchy Plains" ],
-    // 9: ["Monroe",   "Hides",   "A Ripe Bottom"    ],
-
 
 function getRandom(max=CONFIG.LETTERS_COUNT){
   return Math.floor(Math.random() * Math.floor(max));
