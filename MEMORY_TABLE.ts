@@ -25,6 +25,17 @@ const MEMORY_MAP = {
     9: ["September", "would hide",       "A Ripe Bottom"    ],
 }
 
+    // 0: ["Nuton", 	  "Drops",   "A Bland Apple"    ],
+    // 1: ["Tesla",    "Drives",  "A Fresh Car"      ],
+    // 2: ["Einstein", "Shows",  "A Sour Tang"      ],
+    // 3: ["Chaplin",  "Walks",   "Salty Shoes"    ],
+    // 4: ["Mozart",   "Plays",   "Juicy Music"    ],
+    // 5: ["Elvis",    "Sings",   "Sweet Songs"    ],
+    // 6: ["Jakson",   "Dances",  "Spicy Moves"    ],
+    // 7: ["Armstrong","Jumps",   "A Cheesy Moon"    ],
+    // 8: ["Wright",   "Flies",   "Crunchy Plains" ],
+    // 9: ["Monroe",   "Hides",   "A Ripe Bottom"    ],
+
 
 function getRandom(max=CONFIG.LETTERS_COUNT){
   return Math.floor(Math.random() * Math.floor(max));
