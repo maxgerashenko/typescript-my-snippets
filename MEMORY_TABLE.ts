@@ -6,24 +6,25 @@ setTimeout(()=>{
 }, 3*60*60);
 
 const CONFIG = {
-  LETTERS_COUNT: 2,
+  LETTERS_COUNT: 3,
   NUMBER_LENGTH: 3,
   RANDOM_LETTERS: 1,
   RESULT_TIME_DELAY: 3000,
 }
 
 const MEMORY_MAP = {
-    0: ["October",   "eat",    "Bland Apple"    ],
-    1: ["January",   "drives", "A Fresh Car"      ],
-    2: ["April",     "showes", "A Sour Tang"      ],
+    0: ["Oct",       "eat",    "Bland Apple"      ],
+    1: ["Jan",       "drives", "A Fresh Car"      ],
+    2: ["Feb",       "showes", "A Sour Tang"      ],
     3: ["March",     "wears",  "Salty Shoes"      ],
     4: ["April",     "plays",  "Juicy Music"      ],
     5: ["May",       "sings",  "Sweet Songs"      ],
     6: ["June",      "dances", "Spicy Moves"      ],
     7: ["July",      "jumps",  "A Cheesy Moon"    ],
     8: ["Augast",    "flyes",  "Crunchy Plains"   ],
-    9: ["September", "hides",  "A Ripe Bottom"    ],
+    9: ["Sept",      "hides",  "A Ripe Bottom"    ],
 }
+
 
 function getRandom(max=CONFIG.LETTERS_COUNT){
   return Math.floor(Math.random() * Math.floor(max));
