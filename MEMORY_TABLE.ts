@@ -13,16 +13,16 @@ const CONFIG = {
 }
 
 const MEMORY_MAP = {
-    0: ["Oct",       "eat",    "Bland Apple"      ],
-    1: ["Jan",       "drives", "A Fresh Car"      ],
-    2: ["Feb",       "showes", "A Sour Tang"      ],
-    3: ["March",     "wears",  "Salty Shoes"      ],
-    4: ["April",     "plays",  "Juicy Music"      ],
-    5: ["May",       "sings",  "Sweet Songs"      ],
-    6: ["June",      "dances", "Spicy Moves"      ],
-    7: ["July",      "jumps",  "A Cheesy Moon"    ],
-    8: ["Augast",    "flyes",  "Crunchy Plains"   ],
-    9: ["Sept",      "hides",  "A Ripe Bottom"    ],
+    0: ["Nuton",      "eats",   "Bland Apple"    ],
+    1: ["Tesla",      "drives", "A Fresh Car"    ],
+    2: ["Einstein",   "showes", "A Sour Tang"    ],
+    3: ["Chaplin",    "wears",  "Salty Shoes"    ],
+    4: ["Mozart",     "plays",  "Juicy Music"    ],
+    5: ["Elvis",      "sings",  "Sweet Songs"    ],
+    6: ["Jackson",    "dances", "Spicy Moves"    ],
+    7: ["Armstrong",  "jumps",  "A Cheesy Moon"  ],
+    8: ["Wright",     "flyes",  "Crunchy Plains" ],
+    9: ["Marilyn",    "hides",  "A Ripe Bottom"  ],
 }
 
 
